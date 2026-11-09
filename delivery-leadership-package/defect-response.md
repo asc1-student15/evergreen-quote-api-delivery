@@ -1,0 +1,4 @@
+Thank you for your latest message regarding the issues with the quote page and the failed CI run.
+As I understand, every request on the quote page is coming back with a 400 error and the message: "age (34) is less than minimum allowed value (110)." We will need to have our development team investigate the issue and produce a hotfix if our weekly release has any chance of going to Production as planned. While they do that, please let me know if you see any additional suspect behavior and I will bring it back to our team as appropriate.
+For the CI run, this seems to be unrelated to the quote issue since it was in response to a separate issue and is not currently deployed to the environment the quote issue was observed. This will also need to be further investigated and resolved by our development team at a similar urgency.
+I will report back as soon as a solution is found and the plan has been laid out for implementation.
