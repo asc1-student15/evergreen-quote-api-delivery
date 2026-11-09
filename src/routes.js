@@ -27,7 +27,7 @@ export function registerQuoteRoutes(app) {
   app.post("/api/quote", async (req, res, next) => {
     try {
       const { type, age, coverageAmount } = req.body;
-      const monthlyPremium = calculatePremium(type, Number(coverageAmount), Number(age));
+      const monthlyPremium = calculatePremium(type, Number(age), Number(coverageAmount));
       const quote = await Quote.create({
         type,
         age: Number(age),
