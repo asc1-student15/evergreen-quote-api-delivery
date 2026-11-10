@@ -13,7 +13,7 @@ app.use(express.json());
 // The health route: the first thing a load balancer, a Kubernetes probe, or a
 // curious Delivery Lead asks. The service name comes from .env (Day 2 CONFIG).
 app.get("/", (req, res) => {
-  res.json({ message: process.env.SERVICE_NAME ?? "CHANGEME", status: "ok" });
+  res.json({ message: process.env.SERVICE_NAME ?? "Evergreen Quote API", status: "ok" });
 });
 
 registerQuoteRoutes(app);
@@ -34,5 +34,5 @@ app.use((err, req, res, next) => {
 
 await connectDB();
 app.listen(PORT, () => {
-  console.log(`${process.env.SERVICE_NAME ?? "CHANGEME"} on http://localhost:${PORT}`);
+  console.log(`${process.env.SERVICE_NAME ?? "Evergreen Quote API"} on http://localhost:${PORT}`);
 });
