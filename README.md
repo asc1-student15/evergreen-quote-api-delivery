@@ -6,36 +6,52 @@ GraphQL layer, the container recipe, the pipeline, and the cluster manifests
 arrive as provided pieces during the week. You assemble onto this; you never
 write code from scratch.
 
-## Run it
-
+## Run it in a terminal
 ```bash
 npm install
 npm run dev
 ```
 
 Then, in a second terminal:
-
 ```bash
 curl http://localhost:3000/
 ```
 
-You get the health response. Note the service name: that placeholder is a
-Day 1 finding and a Day 2 configuration step.
+## Preview the site
+```
+cd site
+python3 -m http.server 8080
+```
 
-## What is here on Day 1
+## Build the image
+```
+docker build -t evergreen-quote-api:1.0 .
+```
 
-| Path | What it is |
-| --- | --- |
-| `src/index.js` | The service shell: health route, error handling, startup. The `INSERT` markers are where Day 2's pieces land. |
-| `src/db.js` | The MongoDB connection. Reads `MONGODB_URI` from `.env`. |
-| `src/Quote.js` | The Mongoose model: the database contract every write must pass. |
-| `src/premium.js` | The shared premium math. The `BASE_RATES` values are Day 2 configuration. |
-| `src/seed.js` | `npm run seed` resets the database to the six known quotes. |
-| `test/api.test.mjs` | The safety net. Works from Day 2, once the routes piece is in place. |
-| `.env` | The service's configuration: name and database address. |
+## Run the API from the image
+```
+docker run --rm --network host --env-file .env evergreen-quote-api:1.0
+```
 
-## What is deliberately NOT here yet
+## Deploy the image to a cluster
+```
+kind create cluster --name evergreen
+docker pull mongo:7
+kind load docker-image evergreen-quote-api:1.0 --name evergreen
+kind load docker-image mongo:7 --name evergreen
+kubectl apply --dry-run=client -f k8s/
+kubectl apply -f k8s/mongo.yaml
+kubectl wait --for=condition=available deploy/mongo --timeout=180s
+kubectl apply -f k8s/
+kubectl get pods
+```
 
-`src/routes.js`, `src/graphql.js`, a `Dockerfile`, a CI workflow, `k8s/`
-manifests, and the marketing `site/` and `deploy/` folders. Each is a provided
-piece in your lab kit, with exact placement instructions in the kit README.
+## Stop a cluster
+```
+kind delete cluster --name evergreen
+```
+
+## Make the image available to a Service
+```
+kubectl port-forward svc/evergreen-quote-api 8080:80
+```
