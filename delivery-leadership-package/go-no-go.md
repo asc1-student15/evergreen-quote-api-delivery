@@ -19,4 +19,4 @@
 
 ## My call
 As of now, we do not have approval from the Platform team to implement the Node Upgrade, nor are they able to do it early for us. This will hold up the release until next week when they can get it done, and is non-negotiable.
-In addition, the latest defect found needs to have an unrelated hotfix applied, AND the build reported by the CI failure has to also be resolved.
+In addition, the latest defect found needs to have an unrelated hotfix applied.
